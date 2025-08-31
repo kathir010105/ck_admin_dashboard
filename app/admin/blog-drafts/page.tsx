@@ -6,7 +6,12 @@ type BlogDraft = {
   id: string;
   title: string;
   author: string;
+  email: string;
+  category: string;
+  tags: string;
+  excerpt: string;
   updatedAt: string;
+  status: "pending" | "approved" | "rejected";
 };
 
 export default function BlogDraftsPage() {
@@ -46,6 +51,48 @@ export default function BlogDraftsPage() {
     } catch (_error: unknown) {
       setDrafts(prev);
       alert("Action failed");
+    }
+  }
+
+  async function approveDraft(id: string) {
+    const prev = drafts;
+    try {
+      // optimistic update
+      setDrafts((d) => d.map(draft => 
+        draft.id === id ? { ...draft, status: "approved" } : draft
+      ));
+      
+      const res = await fetch(`/api/admin/blog-drafts/${id}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      
+      if (!res.ok) throw new Error();
+    } catch (_error: unknown) {
+      setDrafts(prev);
+      alert("Approval failed");
+    }
+  }
+
+  async function rejectDraft(id: string) {
+    const prev = drafts;
+    try {
+      // optimistic update
+      setDrafts((d) => d.map(draft => 
+        draft.id === id ? { ...draft, status: "rejected" } : draft
+      ));
+      
+      const res = await fetch(`/api/admin/blog-drafts/${id}/reject`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      
+      if (!res.ok) throw new Error();
+    } catch (_error: unknown) {
+      setDrafts(prev);
+      alert("Rejection failed");
     }
   }
 
@@ -96,6 +143,8 @@ export default function BlogDraftsPage() {
               <tr>
                 <th>Title</th>
                 <th>Author</th>
+                <th>Category</th>
+                <th>Status</th>
                 <th>Updated</th>
                 <th className="text-center">Actions</th>
               </tr>
@@ -104,23 +153,60 @@ export default function BlogDraftsPage() {
               {drafts.map((d) => (
                 <tr key={d.id}>
                   <td className="font-medium" style={{ color: 'var(--foreground)' }}>
-                    <a className="hover:text-blue-600 transition-colors" href={`/admin/blog-drafts/${d.id}`}>
-                      {d.title}
-                    </a>
+                    <div>
+                      <a className="hover:text-blue-600 transition-colors" href={`/admin/blog-drafts/${d.id}`}>
+                        {d.title}
+                      </a>
+                      <div className="text-xs mt-1" style={{ color: 'var(--muted-foreground)' }}>
+                        {d.excerpt.length > 60 ? `${d.excerpt.substring(0, 60)}...` : d.excerpt}
+                      </div>
+                    </div>
                   </td>
-                  <td style={{ color: 'var(--muted-foreground)' }}>{d.author}</td>
+                  <td>
+                    <div style={{ color: 'var(--foreground)' }}>{d.author}</div>
+                    <div className="text-xs" style={{ color: 'var(--muted-foreground)' }}>{d.email}</div>
+                  </td>
+                  <td>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      {d.category}
+                    </span>
+                  </td>
+                  <td>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      d.status === 'pending' 
+                        ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                        : d.status === 'approved'
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                    }`}>
+                      {d.status.charAt(0).toUpperCase() + d.status.slice(1)}
+                    </span>
+                  </td>
                   <td style={{ color: 'var(--muted-foreground)' }}>{new Date(d.updatedAt).toLocaleDateString()}</td>
                   <td className="text-center">
                     <div className="inline-flex gap-3">
-                      <button
-                        onClick={() => act("publish", d.id)}
-                        className="btn btn-primary text-sm px-4 py-2"
-                      >
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                        Publish
-                      </button>
+                      {d.status === 'pending' && (
+                        <>
+                          <button
+                            onClick={() => approveDraft(d.id)}
+                            className="btn btn-primary text-sm px-4 py-2"
+                          >
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => rejectDraft(d.id)}
+                            className="btn btn-outline text-sm px-4 py-2"
+                          >
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Reject
+                          </button>
+                        </>
+                      )}
                       <button
                         onClick={() => act("delete", d.id)}
                         className="btn btn-danger text-sm px-4 py-2"

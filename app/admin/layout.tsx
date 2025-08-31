@@ -28,6 +28,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link className="btn btn-outline text-sm" href="/admin">Home</Link>
               <Link className="btn btn-outline text-sm" href="/admin/users">Users</Link>
               <Link className="btn btn-outline text-sm" href="/admin/blog-drafts">Drafts</Link>
+              <Link className="btn btn-outline text-sm" href="/submit-blog">Submit Blog</Link>
               <ThemeToggle />
             </div>
           </div>

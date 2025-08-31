@@ -10,8 +10,15 @@ export type BlogDraft = {
   id: string;
   title: string;
   author: string;
-  updatedAt: string; // ISO date
+  email: string;
+  category: string;
+  tags: string;
+  excerpt: string;
   content: string;
+  coverImage?: string;
+  submittedAt: string; // ISO date
+  updatedAt: string; // ISO date
+  status: "pending" | "approved" | "rejected";
 };
 
 // Simple in-memory stores (resets on server restart)
@@ -77,11 +84,71 @@ const pendingUsers: PendingUser[] = [
 const approvedUsers: PendingUser[] = [];
 
 const blogDrafts: BlogDraft[] = [
-  { id: "b_1", title: "Launch Plan", author: "Alice Kumar", updatedAt: new Date().toISOString(), content: "# Launch Plan\n\nThis is a sample launch plan draft..." },
-  { id: "b_2", title: "2025 Roadmap", author: "Ben Singh", updatedAt: new Date().toISOString(), content: "# 2025 Roadmap\n\nKey initiatives and milestones..." },
-  { id: "b_3", title: "Marketing Strategy", author: "Carol Johnson", updatedAt: new Date().toISOString(), content: "# Marketing Strategy\n\nComprehensive marketing approach for Q1..." },
-  { id: "b_4", title: "Product Development", author: "David Chen", updatedAt: new Date().toISOString(), content: "# Product Development\n\nNew features and improvements planned..." },
-  { id: "b_5", title: "Brand Guidelines", author: "Emma Wilson", updatedAt: new Date().toISOString(), content: "# Brand Guidelines\n\nConsistent brand identity and usage..." }
+  { 
+    id: "b_1", 
+    title: "Launch Plan", 
+    author: "Alice Kumar", 
+    email: "alice@example.com",
+    category: "Business",
+    tags: "launch, strategy, planning",
+    excerpt: "A comprehensive guide to launching your product successfully in the market.",
+    content: "# Launch Plan\n\nThis is a sample launch plan draft...", 
+    submittedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: "pending"
+  },
+  { 
+    id: "b_2", 
+    title: "2025 Roadmap", 
+    author: "Ben Singh", 
+    email: "ben@example.com",
+    category: "Technology",
+    tags: "roadmap, 2025, planning",
+    excerpt: "Strategic roadmap for technology development and innovation in 2025.",
+    content: "# 2025 Roadmap\n\nKey initiatives and milestones...", 
+    submittedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: "pending"
+  },
+  { 
+    id: "b_3", 
+    title: "Marketing Strategy", 
+    author: "Carol Johnson", 
+    email: "carol@techstartup.com",
+    category: "Marketing",
+    tags: "marketing, strategy, digital",
+    excerpt: "Comprehensive marketing approach for Q1 with actionable insights.",
+    content: "# Marketing Strategy\n\nComprehensive marketing approach for Q1...", 
+    submittedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: "pending"
+  },
+  { 
+    id: "b_4", 
+    title: "Product Development", 
+    author: "David Chen", 
+    email: "david@innovatecorp.com",
+    category: "Development",
+    tags: "product, development, features",
+    excerpt: "New features and improvements planned for the upcoming release.",
+    content: "# Product Development\n\nNew features and improvements planned...", 
+    submittedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: "pending"
+  },
+  { 
+    id: "b_5", 
+    title: "Brand Guidelines", 
+    author: "Emma Wilson", 
+    email: "emma@creativeagency.com",
+    category: "Design",
+    tags: "brand, guidelines, identity",
+    excerpt: "Consistent brand identity and usage guidelines for teams.",
+    content: "# Brand Guidelines\n\nConsistent brand identity and usage...", 
+    submittedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: "pending"
+  }
 ];
 
 export const data = {
@@ -119,10 +186,29 @@ export const data = {
   getBlogDraft(id: string): BlogDraft | undefined {
     return blogDrafts.find((b) => b.id === id);
   },
+  // New method to submit blog draft
+  submitBlogDraft(draft: BlogDraft) {
+    try {
+      blogDrafts.push(draft);
+      return { ok: true } as const;
+    } catch (error) {
+      return { ok: false, message: "Failed to submit draft" } as const;
+    }
+  },
   publishDraft(id: string) {
     const idx = blogDrafts.findIndex((b) => b.id === id);
     if (idx === -1) return { ok: false, message: "Draft not found" } as const;
-    blogDrafts.splice(idx, 1);
+    const draft = blogDrafts[idx];
+    draft.status = "approved";
+    draft.updatedAt = new Date().toISOString();
+    return { ok: true } as const;
+  },
+  rejectDraft(id: string) {
+    const idx = blogDrafts.findIndex((b) => b.id === id);
+    if (idx === -1) return { ok: false, message: "Draft not found" } as const;
+    const draft = blogDrafts[idx];
+    draft.status = "rejected";
+    draft.updatedAt = new Date().toISOString();
     return { ok: true } as const;
   },
   deleteDraft(id: string) {

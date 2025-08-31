@@ -1,0 +1,40 @@
+import { NextResponse } from "next/server";
+import { data } from "@/lib/data";
+
+export async function POST(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const body = await request.json();
+    const id = body?.id || params.id;
+    
+    if (!id) {
+      return NextResponse.json(
+        { message: "Missing draft ID" },
+        { status: 400 }
+      );
+    }
+
+    const result = data.rejectDraft(id);
+    
+    if (result.ok) {
+      return NextResponse.json(
+        { message: "Blog draft rejected successfully" },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        { message: result.message || "Failed to reject draft" },
+        { status: 404 }
+      );
+    }
+    
+  } catch (error) {
+    console.error("Blog rejection error:", error);
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
