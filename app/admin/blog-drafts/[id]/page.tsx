@@ -33,7 +33,7 @@ export default function DraftDetailPage({ params }: { params: { id: string } }) 
       if (!res.ok) throw new Error("Failed to fetch draft");
       const data = await res.json();
       setDraft(data.draft);
-    } catch (_error: unknown) {
+    } catch {
       setError("Failed to load draft");
     } finally {
       setLoading(false);

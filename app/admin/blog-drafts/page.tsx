@@ -48,7 +48,7 @@ export default function BlogDraftsPage() {
         body: JSON.stringify({ id }),
       });
       if (!res.ok) throw new Error();
-    } catch (_error: unknown) {
+    } catch {
       setDrafts(prev);
       alert("Action failed");
     }

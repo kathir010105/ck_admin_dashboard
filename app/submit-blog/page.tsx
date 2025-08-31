@@ -408,7 +408,7 @@ export default function SubmitBlogPage() {
               </div>
               <div>
                 <p className="font-medium" style={{ color: 'var(--foreground)' }}>Feedback</p>
-                <p>We'll provide feedback or request revisions if needed.</p>
+                <p>We&apos;ll provide feedback or request revisions if needed.</p>
               </div>
             </div>
             <div className="flex items-start gap-2">

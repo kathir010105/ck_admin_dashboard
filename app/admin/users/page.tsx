@@ -74,7 +74,7 @@ export default function PendingUsersPage() {
         const errorData = await res.json();
         setVerificationError(errorData.error || "Reference code verification failed");
       }
-    } catch (_error: unknown) {
+    } catch {
       setVerificationError("Failed to verify reference code. Please try again.");
     } finally {
       setVerifying(false);

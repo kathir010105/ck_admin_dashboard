@@ -191,7 +191,7 @@ export const data = {
     try {
       blogDrafts.push(draft);
       return { ok: true } as const;
-    } catch (error) {
+    } catch {
       return { ok: false, message: "Failed to submit draft" } as const;
     }
   },
