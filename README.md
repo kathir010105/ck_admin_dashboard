@@ -1,8 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CK Admin Dashboard
 
-## Getting Started
+A modern, responsive admin dashboard built with Next.js 14, TypeScript, and Tailwind CSS for managing blog content and user administration.
 
-First, run the development server:
+## 🚀 Features
+
+- **Blog Management**: Submit, review, and manage blog drafts
+- **User Administration**: Approve, reject, and manage user accounts
+- **Responsive Design**: Mobile-first design that works on all devices
+- **Dark/Light Theme**: Built-in theme switching capability
+- **Modern UI**: Clean, intuitive interface with Tailwind CSS
+- **TypeScript**: Full type safety and better development experience
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Icons**: Heroicons
+- **State Management**: React Hooks
+- **API**: Next.js API Routes
+
+## 📁 Project Structure
+
+```
+ck_admin_dashboard/
+├── app/
+│   ├── admin/           # Admin dashboard pages
+│   │   ├── blog-drafts/ # Blog draft management
+│   │   └── users/       # User management
+│   ├── api/             # API endpoints
+│   ├── submit-blog/     # Blog submission form
+│   └── layout.tsx       # Root layout
+├── components/          # Reusable components
+├── lib/                 # Utility functions
+└── public/              # Static assets
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, or pnpm
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <your-repo-url>
+cd ck_admin_dashboard
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +70,116 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📱 Pages & Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Landing Page (`/`)
 
-## Learn More
+- Welcome screen with navigation to admin areas
+- Quick access to blog submission and user management
 
-To learn more about Next.js, take a look at the following resources:
+### Blog Submission (`/submit-blog`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- User-friendly form for submitting blog content
+- Support for categories, tags, and cover images
+- Markdown formatting support
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Admin Dashboard (`/admin`)
 
-## Deploy on Vercel
+- Protected admin area for content management
+- Blog draft review and approval system
+- User account management
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Blog Drafts (`/admin/blog-drafts`)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Review pending blog submissions
+- Approve or reject content
+- Manage draft status
+
+### User Management (`/admin/users`)
+
+- View all user accounts
+- Approve pending registrations
+- Manage user permissions
+
+## 🎨 Customization
+
+### Themes
+
+The dashboard includes a built-in theme system with CSS custom properties:
+
+- Light and dark mode support
+- Customizable color schemes
+- Consistent design tokens
+
+### Styling
+
+- Built with Tailwind CSS for rapid development
+- Responsive design patterns
+- Custom component classes
+
+## 🔧 Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Code Style
+
+- TypeScript for type safety
+- ESLint for code quality
+- Consistent component structure
+- Responsive design principles
+
+## 📦 API Endpoints
+
+- `POST /api/submit-blog` - Submit new blog content
+- `GET /api/admin/blog-drafts` - Get pending blog drafts
+- `POST /api/admin/blog-drafts/[id]/approve` - Approve blog draft
+- `POST /api/admin/blog-drafts/[id]/reject` - Reject blog draft
+- `GET /api/admin/users` - Get user list
+- `POST /api/admin/users/[id]/approve` - Approve user account
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy automatically on every push
+
+### Other Platforms
+
+- Netlify
+- Railway
+- DigitalOcean App Platform
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For support and questions:
+
+- Create an issue in the repository
+- Check the documentation
+- Review the code examples
+
+---
+
+Built with ❤️ using Next.js and Tailwind CSS
