@@ -93,9 +93,9 @@ export default function SubmitBlogPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
+    <div className="min-h-screen z-10 relative" style={{ backgroundColor: 'var(--background)' }}>
       {/* Header */}
-      <header className="border-b" style={{ borderColor: 'var(--border)' }}>
+      <header className="border-b z-10 relative" style={{ borderColor: 'var(--border)' }}>
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -123,7 +123,7 @@ export default function SubmitBlogPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-8">
+      <main className="max-w-4xl mx-auto px-6 py-8 z-10 relative">
         {/* Page Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-4" style={{ color: 'var(--foreground)' }}>
